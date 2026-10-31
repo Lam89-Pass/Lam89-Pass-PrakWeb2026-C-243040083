@@ -1,0 +1,29 @@
+:root {
+  --bg: #0b1120;
+  --surface: #0f172a;
+  --surface-2: #1e293b;
+  --surface-hover: #131f37;
+
+  --text: #f8fafc;
+  --text-soft: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.1);
+  --accent-line: rgba(56, 189, 248, 0.35);
+
+  --line: rgba(148, 163, 184, 0.12);
+  --line-strong: rgba(148, 163, 184, 0.22);
+
+  --ok: #4ade80;
+  --warn: #facc15;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --container: 1120px;
+  --grid-size: 48px; /* jarak antar garis di background */
+}
