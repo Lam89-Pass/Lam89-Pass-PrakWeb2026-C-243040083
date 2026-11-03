@@ -13,9 +13,12 @@ function App() {
       return JSON.parse(dataTersimpan);
     }
     return [
-      { id: 1, judul: 'ANAJAY', selesai: false },
+      { id: 1, judul: 'Install Node.js dan Vite', selesai: true },
+      { id: 2, judul: 'Pelajari useState', selesai: false },
     ];
   });
+
+  const [filter, setFilter] = useState('semua');
 
   useEffect(() => {
     const sisa = daftarTugas.filter((tugas) => !tugas.selesai).length;
@@ -37,7 +40,17 @@ function App() {
     setDaftarTugas(daftarTugas.filter((tugas) => tugas.id !== id));
   };
 
+  const hapusSemuaSelesai = () => {
+    setDaftarTugas(daftarTugas.filter((tugas) => !tugas.selesai));
+  };
+
   const jumlahSelesai = daftarTugas.filter((tugas) => tugas.selesai).length;
+
+  const tugasDifilter = daftarTugas.filter((tugas) => {
+    if (filter === 'selesai') return tugas.selesai;
+    if (filter === 'belum_selesai') return !tugas.selesai;
+    return true;
+  });
 
   const iconTopiWisuda = (
     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -82,19 +95,46 @@ function App() {
           <FormTugas onTambah={tambahTugas} />
         </Kartu>
 
-        <Kartu judul="Daftar Tugas" icon={iconList}>
-          <p className="ringkasan">
-            {jumlahSelesai} dari {daftarTugas.length} tugas selesai
-          </p>
+        <Kartu
+          judul="Daftar Tugas"
+          icon={iconList}
+          ringkasan={`${jumlahSelesai} dari ${daftarTugas.length} tugas selesai`}
+        >
+          <div className="filter-container">
+            <button
+              className={`tombol-filter ${filter === 'semua' ? 'aktif' : ''}`}
+              onClick={() => setFilter('semua')}
+            >Semua</button>
+            <button
+              className={`tombol-filter ${filter === 'belum_selesai' ? 'aktif' : ''}`}
+              onClick={() => setFilter('belum_selesai')}
+            >Belum Selesai</button>
+            <button
+              className={`tombol-filter ${filter === 'selesai' ? 'aktif' : ''}`}
+              onClick={() => setFilter('selesai')}
+            >Selesai</button>
+          </div>
 
-          {daftarTugas.length === 0 ? (
-            <p className="kosong">Belum ada tugas.</p>
+          {tugasDifilter.length === 0 ? (
+            <p className="kosong">Belum ada tugas di kategori ini.</p>
           ) : (
             <ul className="daftar">
-              {daftarTugas.map((tugas) => (
+              {tugasDifilter.map((tugas) => (
                 <ItemTugas key={tugas.id} tugas={tugas} onUbahStatus={ubahStatus} onHapus={hapusTugas} />
               ))}
             </ul>
+          )}
+
+          {jumlahSelesai > 0 && (
+            <div className="aksi-bawah">
+              <button className="tombol tombol-merah" onClick={hapusSemuaSelesai}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '6px' }}>
+                  <polyline points="3 6 5 6 21 6" />
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
+                Hapus Semua yang Selesai
+              </button>
+            </div>
           )}
         </Kartu>
 
