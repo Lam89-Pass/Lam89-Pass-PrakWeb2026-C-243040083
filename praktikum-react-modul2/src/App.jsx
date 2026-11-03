@@ -1,122 +1,105 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+// src/App.jsx
+import { useState, useEffect } from 'react';
+import './App.css';
+import Kartu from './Kartu';
+import Penghitung from './Penghitung';
+import FormTugas from './FormTugas';
+import ItemTugas from './ItemTugas';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [daftarTugas, setDaftarTugas] = useState(() => {
+    const dataTersimpan = localStorage.getItem('daftar-tugas');
+    if (dataTersimpan) {
+      return JSON.parse(dataTersimpan);
+    }
+    return [
+      { id: 1, judul: 'ANAJAY', selesai: false },
+    ];
+  });
+
+  useEffect(() => {
+    const sisa = daftarTugas.filter((tugas) => !tugas.selesai).length;
+    document.title = `(${sisa}) Tugas Belum Selesai`;
+    localStorage.setItem('daftar-tugas', JSON.stringify(daftarTugas));
+  }, [daftarTugas]);
+
+  const tambahTugas = (judul) => {
+    setDaftarTugas([...daftarTugas, { id: Date.now(), judul, selesai: false }]);
+  };
+
+  const ubahStatus = (id) => {
+    setDaftarTugas(daftarTugas.map((tugas) =>
+      tugas.id === id ? { ...tugas, selesai: !tugas.selesai } : tugas
+    ));
+  };
+
+  const hapusTugas = (id) => {
+    setDaftarTugas(daftarTugas.filter((tugas) => tugas.id !== id));
+  };
+
+  const jumlahSelesai = daftarTugas.filter((tugas) => tugas.selesai).length;
+
+  const iconTopiWisuda = (
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+      <path d="M6 12v5c3 3 9 3 12 0v-5" />
+    </svg>
+  );
+
+  const iconKalender = (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+
+  const iconList = (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="8" y1="6" x2="21" y2="6" />
+      <line x1="8" y1="12" x2="21" y2="12" />
+      <line x1="8" y1="18" x2="21" y2="18" />
+      <line x1="3" y1="6" x2="3.01" y2="6" />
+      <line x1="3" y1="12" x2="3.01" y2="12" />
+      <line x1="3" y1="18" x2="3.01" y2="18" />
+    </svg>
+  );
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="wadah">
+      <div className="wadah-content">
+
+        <div className="header-app">
+          <div className="logo-icon">{iconTopiWisuda}</div>
+          <h1 className="judul">Daftar Tugas Praktikum</h1>
+          <p className="subjudul">Laboratorium Informatika Modul 2: React Lanjutan</p>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+
+        <Penghitung />
+
+        <Kartu judul="Tambah Tugas Baru" icon={iconKalender}>
+          <FormTugas onTambah={tambahTugas} />
+        </Kartu>
+
+        <Kartu judul="Daftar Tugas" icon={iconList}>
+          <p className="ringkasan">
+            {jumlahSelesai} dari {daftarTugas.length} tugas selesai
           </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
 
-      <div className="ticks"></div>
+          {daftarTugas.length === 0 ? (
+            <p className="kosong">Belum ada tugas.</p>
+          ) : (
+            <ul className="daftar">
+              {daftarTugas.map((tugas) => (
+                <ItemTugas key={tugas.id} tugas={tugas} onUbahStatus={ubahStatus} onHapus={hapusTugas} />
+              ))}
+            </ul>
+          )}
+        </Kartu>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </div>
+    </div>
+  );
 }
-
-export default App
+export default App;
