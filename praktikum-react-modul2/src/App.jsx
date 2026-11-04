@@ -6,6 +6,7 @@ import Penghitung from './Penghitung';
 import FormTugas from './FormTugas';
 import ItemTugas from './ItemTugas';
 import CatatanKeuangan from './CatatanKeuangan';
+import KursorPeri from './KursorPeri';
 
 function App() {
   const [daftarTugas, setDaftarTugas] = useState(() => {
@@ -83,6 +84,8 @@ function App() {
   return (
     <div className="wadah">
       <div className="wadah-content">
+
+        <KursorPeri />
 
         <div className="header-app">
           <div className="logo-icon">{iconTopiWisuda}</div>
