@@ -34,7 +34,6 @@ body {
   margin: 40px 20px;
 }
 
-/* Header macOS Traffic Light */
 .wadah::before {
   content: '';
   display: block;
@@ -53,7 +52,6 @@ body {
   align-items: center;
 }
 
-/* Header Logo & Text */
 .header-app {
   text-align: center;
   margin-bottom: 24px;
@@ -86,7 +84,6 @@ body {
   font-weight: 500;
 }
 
-/* Kartu / Section */
 .kartu {
   width: 100%;
   background: rgba(255, 255, 255, 0.5);
@@ -138,7 +135,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
-/* Komponen Penghitung */
 .penghitung-teks {
   text-align: center;
   font-size: 13px;
@@ -164,7 +160,6 @@ body {
   width: 100%;
 }
 
-/* Input Form */
 .input-wrapper {
   flex: 1;
   position: relative;
@@ -206,7 +201,6 @@ body {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
 }
 
-/* Tombol */
 .tombol {
   display: flex;
   align-items: center;
@@ -341,7 +335,6 @@ input[type="checkbox"]:checked::after {
   margin: 8px 0 0;
 }
 
-/* --- FITUR TAMBAHAN TUGAS 1 & 2 --- */
 .filter-container {
   display: flex;
   justify-content: center;
