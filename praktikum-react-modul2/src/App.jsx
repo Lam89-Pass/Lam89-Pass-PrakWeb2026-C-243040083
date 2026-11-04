@@ -5,6 +5,7 @@ import Kartu from './Kartu';
 import Penghitung from './Penghitung';
 import FormTugas from './FormTugas';
 import ItemTugas from './ItemTugas';
+import CatatanKeuangan from './CatatanKeuangan';
 
 function App() {
   const [daftarTugas, setDaftarTugas] = useState(() => {
@@ -137,6 +138,8 @@ function App() {
             </div>
           )}
         </Kartu>
+
+        <CatatanKeuangan />
 
       </div>
     </div>
